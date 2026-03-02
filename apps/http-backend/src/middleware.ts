@@ -6,18 +6,14 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 export function middleware(req: Request, res: Response, next: NextFunction) {
   //@ts-ignore
   const token = req.headers["authorization"] ?? "";
-  //@ts-ignore
-  const decoded = jwt.verify(token, JWT_SECRET);
-
 
   try {
-    //@ts-ignore
-
+  
     const decoded = jwt.verify(token, JWT_SECRET);
 
     //@ts-ignore
     req.userId = (decoded as JwtPayload).userId;
-    //@ts-ignore
+   
     next();
   } catch {
     //@ts-ignore

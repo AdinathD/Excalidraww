@@ -96,19 +96,21 @@ app.post("/room", middleware, async (req, res) => {
 })
 //top 50 msgs from the database with given roomId
 app.get("/chats/:roomId", async (req, res) => {
-  try{const roomId = Number(req.params.roomId);
+  try {
+    const roomId = Number(req.params.roomId);
     console.log(roomId);
-  const messages = await prismaClient.chat.findMany({
-    where: {
-      roomId: roomId
-    },
-    take: 100,
-    orderBy: {
-      id: "desc"
-    }
-  })
-  res.json({ messages })}
-  catch(err){
+    const messages = await prismaClient.chat.findMany({
+      where: {
+        roomId: roomId
+      },
+      take: 100,
+      orderBy: {
+        id: "desc"
+      }
+    })
+    res.json({ messages })
+  }
+  catch (err) {
     console.error(err);
     res.status(500).json({ message: "failed to get chats" });
   }
@@ -125,4 +127,24 @@ app.get("/room/:slug", async (req, res) => {
 
   })
   res.json({ room })
+})
+
+// @ts-ignore
+app.get("/my-rooms", middleware, async (req, res) => {
+  // @ts-ignore
+  const userId = req.userId;
+  try {
+    const rooms = await prismaClient.room.findMany({
+      where: {
+        adminId: userId
+      },
+      orderBy: {
+        createdAt: "desc"
+      }
+    });
+    res.json({ rooms });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "failed to get rooms" });
+  }
 })

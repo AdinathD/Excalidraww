@@ -111,6 +111,36 @@ wss.on('connection', function connection(ws, request) {
         }
       }
     }
+
+    if (parsedData.type == "clear") {
+      const user = users.find((user) => user.ws === ws);
+      if (user) {
+        const roomId = parsedData.roomId;
+
+        // Broadcast to all users in the room
+        users.forEach(u => {
+          if (u.rooms.includes(roomId)) {
+            u.ws.send(
+              JSON.stringify({
+                type: "clear",
+                roomId
+              })
+            )
+          }
+        });
+
+        // Delete from database
+        try {
+          await prismaClient.chat.deleteMany({
+            where: {
+              roomId: Number(roomId)
+            }
+          });
+        } catch (error) {
+          console.error("Failed to delete chats from database:", error);
+        }
+      }
+    }
   });
 
   // Clean up when user disconnects

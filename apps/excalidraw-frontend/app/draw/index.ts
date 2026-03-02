@@ -29,9 +29,10 @@ export default async function initDraw(canvas: HTMLCanvasElement, roomId: string
             const parsedShape = JSON.parse(message.message);
             existingShapes.push(parsedShape.shape);
             clearCanvas(existingShapes, ctx, canvas); //clear the canvas and redraw the shapes with updated existingShapes
-
+        } else if (message.type == "clear") {
+            existingShapes = [];
+            clearCanvas(existingShapes, ctx, canvas);
         }
-
     }
     //draw the existing shapes on the canvas
     clearCanvas(existingShapes, ctx, canvas);
