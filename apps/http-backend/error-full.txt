@@ -1,0 +1,38 @@
+﻿node : file:///C:/Adinath/excalidraww/packa
+ges/db/src/index.ts:13
+At line:1 char:1
++ node dist/index.js 2>&1 | Out-File 
+-FilePath error-full.txt -Encoding ...
++ ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified 
+   : (file:///C:/Adin...src/index.ts:13:S  
+  tring) [], RemoteException
+    + FullyQualifiedErrorId : NativeComman 
+   dError
+ 
+} as any);
+^
+
+SyntaxError: missing ) after argument list
+    at compileSourceTextModule 
+(node:internal/modules/esm/utils:338:16)
+    at ModuleLoader.importSyncForRequire 
+(node:internal/modules/esm/loader:353:18)
+    at loadESMFromCJS 
+(node:internal/modules/cjs/loader:1385:24)
+    at Module._compile 
+(node:internal/modules/cjs/loader:1536:5)
+    at Object..js 
+(node:internal/modules/cjs/loader:1706:10)
+    at Module.load 
+(node:internal/modules/cjs/loader:1289:32)
+    at Function._load 
+(node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync 
+(node:diagnostics_channel:322:14)
+    at wrapModuleLoad 
+(node:internal/modules/cjs/loader:220:24)
+    at Module.require 
+(node:internal/modules/cjs/loader:1311:12)
+
+Node.js v22.14.0
