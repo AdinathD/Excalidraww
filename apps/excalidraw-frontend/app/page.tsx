@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, ArrowRight, Loader2 } from "lucide-react";
 
+import { HTTP_URL } from "../config";
+
 export default function LandingPage() {
     const [isSignin, setIsSignin] = useState(true);
     const [username, setUsername] = useState("");
@@ -18,9 +20,9 @@ export default function LandingPage() {
         setError("");
 
         try {
-            const url = isSignin ? "http://localhost:3001/signin" : "http://localhost:3001/signup";
+            const url = isSignin ? `${HTTP_URL}/signin` : `${HTTP_URL}/signup`;
             const body = isSignin ? { username, password } : { username, password, name };
-            
+
             const response = await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -53,9 +55,9 @@ export default function LandingPage() {
             {/* Ambient Background Glows */}
             <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-indigo-600/20 rounded-full blur-[120px] -z-10 animate-pulse mix-blend-screen pointer-events-none"></div>
             <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-purple-600/20 rounded-full blur-[120px] -z-10 animate-pulse delay-1000 mix-blend-screen pointer-events-none"></div>
-            
+
             <div className="flex flex-col md:flex-row shadow-2xl shadow-indigo-500/10 rounded-3xl bg-zinc-900/40 border border-zinc-800 backdrop-blur-2xl overflow-hidden w-[90%] max-w-[1000px] min-h-[600px] z-10 transition-all duration-500">
-                
+
                 {/* Left Side: Branding & Pitch */}
                 <div className="hidden md:flex md:w-1/2 p-12 flex-col justify-between bg-zinc-900/50 relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 opacity-50 group-hover:opacity-100 transition-opacity duration-1000"></div>
@@ -72,7 +74,7 @@ export default function LandingPage() {
                             Where ideas take <span className="text-indigo-400">shape</span>.
                         </h2>
                         <p className="text-zinc-400 text-lg leading-relaxed">
-                            A blazing fast, minimalist collaborative whiteboard. 
+                            A blazing fast, minimalist collaborative whiteboard.
                             Sketch, diagram, and brainstorm with your team in real-time.
                         </p>
                     </div>
@@ -80,7 +82,7 @@ export default function LandingPage() {
 
                 {/* Right Side: Auth Form */}
                 <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-zinc-950/50">
-                    
+
                     {/* Mobile Header */}
                     <div className="md:hidden flex items-center justify-center gap-3 mb-10">
                         <Pencil className="w-6 h-6 text-indigo-400" />
@@ -93,8 +95,8 @@ export default function LandingPage() {
                                 {isSignin ? "Welcome back" : "Create account"}
                             </h3>
                             <p className="text-zinc-400 text-sm">
-                                {isSignin 
-                                    ? "Enter your details to access your dashboard." 
+                                {isSignin
+                                    ? "Enter your details to access your dashboard."
                                     : "Sign up to start sketching with your team."}
                             </p>
                         </div>
@@ -110,9 +112,9 @@ export default function LandingPage() {
                             {!isSignin && (
                                 <div className="space-y-1">
                                     <label className="text-xs font-medium text-zinc-400 uppercase tracking-wider ml-1">Full Name</label>
-                                    <input 
-                                        className="w-full p-3.5 bg-zinc-900/80 border border-zinc-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-zinc-600 shadow-inner text-zinc-100" 
-                                        type="text" 
+                                    <input
+                                        className="w-full p-3.5 bg-zinc-900/80 border border-zinc-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-zinc-600 shadow-inner text-zinc-100"
+                                        type="text"
                                         placeholder="John Doe"
                                         required
                                         value={name}
@@ -123,9 +125,9 @@ export default function LandingPage() {
 
                             <div className="space-y-1">
                                 <label className="text-xs font-medium text-zinc-400 uppercase tracking-wider ml-1">Email</label>
-                                <input 
-                                    className="w-full p-3.5 bg-zinc-900/80 border border-zinc-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-zinc-600 shadow-inner text-zinc-100" 
-                                    type="text" 
+                                <input
+                                    className="w-full p-3.5 bg-zinc-900/80 border border-zinc-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-zinc-600 shadow-inner text-zinc-100"
+                                    type="text"
                                     placeholder="your@email.com"
                                     required
                                     value={username}
@@ -138,9 +140,9 @@ export default function LandingPage() {
                                     <label className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Password</label>
                                     {isSignin && <span className="text-xs text-indigo-400 hover:text-indigo-300 cursor-pointer">Forgot?</span>}
                                 </div>
-                                <input 
-                                    className="w-full p-3.5 bg-zinc-900/80 border border-zinc-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-zinc-600 shadow-inner text-zinc-100" 
-                                    type="password" 
+                                <input
+                                    className="w-full p-3.5 bg-zinc-900/80 border border-zinc-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-zinc-600 shadow-inner text-zinc-100"
+                                    type="password"
                                     placeholder="••••••••"
                                     required
                                     value={password}
@@ -148,7 +150,7 @@ export default function LandingPage() {
                                 />
                             </div>
 
-                            <button 
+                            <button
                                 type="submit"
                                 disabled={loading}
                                 className="w-full mt-6 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed group"
@@ -166,11 +168,11 @@ export default function LandingPage() {
 
                         <div className="mt-8 text-center text-sm text-zinc-500">
                             {isSignin ? "Don't have an account? " : "Already have an account? "}
-                            <button 
+                            <button
                                 onClick={() => {
                                     setIsSignin(!isSignin);
                                     setError("");
-                                }} 
+                                }}
                                 className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
                             >
                                 {isSignin ? "Sign up" : "Sign in"}

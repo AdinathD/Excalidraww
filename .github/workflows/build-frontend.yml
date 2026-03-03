@@ -1,0 +1,35 @@
+name: Build Frontend
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/excalidraw-frontend/**'
+      - 'packages/**'
+      - 'docker/frontend.Dockerfile'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/frontend.Dockerfile
+          push: true
+          tags: |
+            adinathd/excalidraww-frontend:latest
+            adinathd/excalidraww-frontend:${{github.sha}}
+          build-args: |
+            DATABASE_URL=${{secrets.DATABASE_URL}}

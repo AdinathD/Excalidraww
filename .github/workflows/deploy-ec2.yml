@@ -1,0 +1,36 @@
+name: Deploy to EC2
+on:
+  workflow_run:
+    workflows: ["Build HTTP Backend", "Build WS Backend", "Build Frontend"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Deploy to EC2 Server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "Pulling latest docker images..."
+            sudo docker pull adinathd/excalidraww-http:latest
+            sudo docker pull adinathd/excalidraww-ws:latest
+            sudo docker pull adinathd/excalidraww-frontend:latest
+            
+            echo "Restarting services through docker-compose..."
+            cd /path/to/your/project/on/ec2
+            
+            # Write out database URL environment variable dynamically before starting
+            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+            
+            sudo docker compose -f docker-compose.yml down
+            sudo docker compose -f docker-compose.yml up -d
+            
+            echo "Deployment completed successfully!"

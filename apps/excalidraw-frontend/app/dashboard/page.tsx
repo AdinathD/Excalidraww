@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Plus, LogIn, Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { HTTP_URL } from "../../config";
+
 export default function DashboardPage() {
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("");
@@ -18,7 +20,7 @@ export default function DashboardPage() {
             const token = localStorage.getItem("token");
             if (!token) return;
             try {
-                const response = await fetch("http://localhost:3001/my-rooms", {
+                const response = await fetch(`${HTTP_URL}/my-rooms`, {
                     headers: { "Authorization": token }
                 });
                 const data = await response.json();
@@ -48,7 +50,7 @@ export default function DashboardPage() {
         setError("");
 
         try {
-            const response = await fetch("http://localhost:3001/room", {
+            const response = await fetch(`${HTTP_URL}/room`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -83,7 +85,7 @@ export default function DashboardPage() {
         setError("");
 
         try {
-            const response = await fetch(`http://localhost:3001/room/${slug}`);
+            const response = await fetch(`${HTTP_URL}/room/${slug}`);
             const data = await response.json();
 
             if (!response.ok) {
