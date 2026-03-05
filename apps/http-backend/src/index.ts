@@ -43,10 +43,10 @@ app.post("/signup", async (req, res) => {
     res.status(500).json({ message: "failed to create user" });
   }
 });
-app.post("/signin",middleware, async (req, res) => {
+app.post("/signin", async (req, res) => {
   const parsedData = SigninSchema.safeParse(req.body);
   if (!parsedData.success) {
-    res.json({
+    res.status(400).json({
       message: "incorrect inputs"
     })
     return;
@@ -61,7 +61,7 @@ app.post("/signin",middleware, async (req, res) => {
   })
 
   if (!user) {
-    return res.json({
+    res.status(403).json({
       message: "user not found"
     })
     return;

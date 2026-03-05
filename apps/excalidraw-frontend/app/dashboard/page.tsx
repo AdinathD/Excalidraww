@@ -10,19 +10,26 @@ export default function DashboardPage() {
     const [slug, setSlug] = useState("");
     const [loadingCreate, setLoadingCreate] = useState(false);
     const [loadingJoin, setLoadingJoin] = useState(false);
-    const [myRooms, setMyRooms] = useState<{id: string, slug: string}[]>([]);
+    const [myRooms, setMyRooms] = useState<{ id: string, slug: string }[]>([]);
     const [error, setError] = useState("");
     const router = useRouter();
 
-    
     useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token || token === "undefined") {
+            router.push("/");
+            return;
+        }
         const fetchMyRooms = async () => {
-            const token = localStorage.getItem("token");
-            if (!token) return;
             try {
                 const response = await fetch(`${HTTP_URL}/my-rooms`, {
                     headers: { "Authorization": token }
                 });
+                if (!response.ok) {
+                    // if token is invalid, also push to Home.
+                    router.push("/");
+                    return;
+                }
                 const data = await response.json();
                 if (data.rooms) {
                     setMyRooms(data.rooms);
@@ -32,7 +39,7 @@ export default function DashboardPage() {
             }
         };
         fetchMyRooms();
-    }, []);
+    }, [router]);
 
     const handleCreateRoom = async () => {
         if (!name.trim()) {
@@ -203,7 +210,7 @@ export default function DashboardPage() {
                     </h2>
                     <p className="text-zinc-400 text-sm">Jump back into the canvases you were previously working on.</p>
                 </div>
-                
+
                 {myRooms.length === 0 ? (
                     <div className="text-center py-10 text-zinc-500 bg-zinc-950/30 rounded-xl border border-zinc-800 border-dashed">
                         No rooms created yet.

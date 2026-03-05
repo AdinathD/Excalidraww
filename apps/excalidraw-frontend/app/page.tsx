@@ -36,8 +36,12 @@ export default function LandingPage() {
             }
 
             if (isSignin) {
-                localStorage.setItem("token", data.token);
-                router.push("/dashboard");
+                if (data.token) {
+                    localStorage.setItem("token", data.token);
+                    router.push("/dashboard");
+                } else {
+                    throw new Error(data.message || "Authentication failed");
+                }
             } else {
                 setIsSignin(true);
                 setUsername("");
