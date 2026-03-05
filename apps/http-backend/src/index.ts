@@ -8,9 +8,15 @@ import cors from "cors";
 
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json());
-app.listen(3001);
+
+const port = process.env.PORT || 3001;
+app.listen(port, () => {
+  console.log(`http-backend listening on port ${port}`);
+});
 app.post("/signup", async (req, res) => {
   const parseResult = CreateUserSchema.safeParse(req.body);
   if (!parseResult.success) {

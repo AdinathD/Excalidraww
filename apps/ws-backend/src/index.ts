@@ -10,9 +10,9 @@ type User = {
 }
 //array of users
 const users: User[] = [];
-
-
-const wss = new WebSocketServer({ port: 8080 });
+const port = process.env.PORT ? parseInt(process.env.PORT) : 8080;
+const wss = new WebSocketServer({ port });
+console.log(`WebSocket server running on port ${port}`);
 
 //check if the token is valid and return the userId
 function checkUser(token: string): string | null {
@@ -37,9 +37,9 @@ function checkUser(token: string): string | null {
 
 wss.on('connection', function connection(ws, request) {
 
-  const url = request.url;   //ws:localhost:8080?token:123212
+  const url = request.url;
   if (!url) { return }
-  const queryParams = new URLSearchParams(url.split('?')[1]);
+  const queryParams = new URLSearchParams(url.split('?')[1] || "");
   const token = queryParams.get('token') || "";
   const userId = checkUser(token);
   if (!userId) {
