@@ -10,10 +10,13 @@ export function middleware(req: Request, res: Response, next: NextFunction) {
 
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    //@ts-ignore
-    req.userId = (decoded as JwtPayload).userId;
+    if(decoded){
+      //@ts-ignore
+      req.userId = (decoded as JwtPayload).userId;
 
     next();
+  }
+    
   } catch {
     //@ts-ignore
     return res.status(403).json({ message: "Unauthorized" });

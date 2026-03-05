@@ -43,7 +43,7 @@ app.post("/signup", async (req, res) => {
     res.status(500).json({ message: "failed to create user" });
   }
 });
-app.post("/signin", async (req, res) => {
+app.post("/signin",middleware, async (req, res) => {
   const parsedData = SigninSchema.safeParse(req.body);
   if (!parsedData.success) {
     res.json({
