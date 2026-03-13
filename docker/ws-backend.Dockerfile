@@ -8,11 +8,14 @@ RUN turbo prune ws-backend --docker
 FROM node:20-alpine AS installer
 WORKDIR /app
 
+# enable pnpm
+RUN corepack enable
+
 # First install dependencies
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/package-lock.json ./package-lock.json
-RUN npm install
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN pnpm install --frozen-lockfile
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
@@ -30,5 +33,6 @@ WORKDIR /app
 COPY --from=installer /app .
 
 WORKDIR /app/apps/ws-backend
+
 # Start websocket server
 CMD ["npm", "run", "start"]
