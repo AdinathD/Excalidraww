@@ -14,11 +14,14 @@ export default function DashboardPage() {
     const [error, setError] = useState("");
     const router = useRouter();
 
-    
     useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token || token === "undefined" || token === "null") {
+            localStorage.removeItem("token");
+            router.push("/");
+            return;
+        }
         const fetchMyRooms = async () => {
-            const token = localStorage.getItem("token");
-            if (!token) return;
             try {
                 const response = await fetch(`${HTTP_URL}/my-rooms`, {
                     headers: { "Authorization": token }

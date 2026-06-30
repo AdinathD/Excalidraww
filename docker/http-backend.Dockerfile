@@ -1,34 +1,43 @@
 FROM node:20-alpine AS builder
-
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 RUN npm install -g turbo
 COPY . .
 RUN turbo prune http-backend --docker
 
 FROM node:20-alpine AS installer
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
+
+# Install pnpm matching the project version
+RUN npm install -g pnpm@9.0.0
 
 # First install dependencies
 COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/package-lock.json ./package-lock.json
-RUN npm install
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
+RUN pnpm install --frozen-lockfile
 
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 
 # Generate Prisma Client
-RUN cd packages/db && npx prisma generate
+RUN pnpm --filter db exec prisma generate
 
 # Build the backend
-RUN npx turbo run build --filter=http-backend
+RUN pnpm turbo run build --filter=http-backend
 
 FROM node:20-alpine AS runner
+RUN apk add --no-cache openssl
 WORKDIR /app
+
+# Install pnpm matching the project version in runner stage as well
+RUN npm install -g pnpm@9.0.0
 
 # Copy the built app
 COPY --from=installer /app .
 
 WORKDIR /app/apps/http-backend
-# Start express server
-CMD ["npm", "run", "start"]
+# Start Express backend using pnpm
+CMD ["pnpm", "start"]

@@ -36,8 +36,12 @@ export default function LandingPage() {
             }
 
             if (isSignin) {
-                localStorage.setItem("token", data.token);
-                router.push("/dashboard");
+                if (data.token) {
+                    localStorage.setItem("token", data.token);
+                    router.push("/dashboard");
+                } else {
+                    throw new Error(data.message || "Failed to retrieve authentication token");
+                }
             } else {
                 setIsSignin(true);
                 setUsername("");
