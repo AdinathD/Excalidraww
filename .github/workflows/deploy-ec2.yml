@@ -28,8 +28,10 @@ jobs:
             echo "Restarting services through docker-compose..."
             cd ~/Excalidraww
             
-            # Write out database URL environment variable dynamically before starting
+            # Write out database URL and public URL environment variables dynamically before starting
             echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+            echo "NEXT_PUBLIC_HTTP_URL=${{ secrets.NEXT_PUBLIC_HTTP_URL }}" >> .env
+            echo "NEXT_PUBLIC_WS_URL=${{ secrets.NEXT_PUBLIC_WS_URL }}" >> .env
             
             sudo docker compose -f docker-compose.yml down
             sudo docker compose -f docker-compose.yml up -d

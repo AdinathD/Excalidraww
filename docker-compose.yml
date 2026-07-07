@@ -35,6 +35,9 @@ services:
     build:
       context: .
       dockerfile: docker/frontend.Dockerfile
+      args:
+        - NEXT_PUBLIC_HTTP_URL=${NEXT_PUBLIC_HTTP_URL}
+        - NEXT_PUBLIC_WS_URL=${NEXT_PUBLIC_WS_URL}
     ports:
       - "3000:3000"
     env_file:
@@ -42,4 +45,6 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=${DATABASE_URL}
+      - NEXT_PUBLIC_HTTP_URL=${NEXT_PUBLIC_HTTP_URL}
+      - NEXT_PUBLIC_WS_URL=${NEXT_PUBLIC_WS_URL}
 
