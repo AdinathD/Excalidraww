@@ -26,7 +26,7 @@ jobs:
             sudo docker pull adinathd/excalidraww-frontend:latest
             
             echo "Restarting services through docker-compose..."
-            cd ~/excalidraww
+            cd ~/Excalidraww
             
             # Write out database URL environment variable dynamically before starting
             echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
