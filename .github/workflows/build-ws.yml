@@ -6,6 +6,7 @@ on:
       - 'apps/ws-backend/**'
       - 'packages/**'
       - 'docker/ws-backend.Dockerfile'
+  workflow_dispatch:
 
 jobs:
   build:

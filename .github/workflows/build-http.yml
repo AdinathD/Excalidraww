@@ -6,6 +6,7 @@ on:
       - 'apps/http-backend/**'
       - 'packages/**'
       - 'docker/http-backend.Dockerfile'
+  workflow_dispatch:
 
 jobs:
   build:

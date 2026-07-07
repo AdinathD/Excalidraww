@@ -6,6 +6,7 @@ on:
       - 'apps/excalidraw-frontend/**'
       - 'packages/**'
       - 'docker/frontend.Dockerfile'
+  workflow_dispatch:
 
 jobs:
   build:
