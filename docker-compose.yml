@@ -1,18 +1,7 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15-alpine
-    restart: always
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: excalidraww
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
+  
   ws-backend:
     image: adinathd/excalidraww-ws:latest
     build:
@@ -25,8 +14,7 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=${DATABASE_URL}
-    depends_on:
-      - postgres
+    
 
   http-backend:
     image: adinathd/excalidraww-http:latest
@@ -40,8 +28,7 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=${DATABASE_URL}
-    depends_on:
-      - postgres
+    
 
   excalidraw-frontend:
     image: adinathd/excalidraww-frontend:latest
@@ -55,8 +42,4 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=${DATABASE_URL}
-    depends_on:
-      - postgres
 
-volumes:
-  postgres_data:
