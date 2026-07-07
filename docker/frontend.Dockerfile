@@ -31,6 +31,9 @@ ARG NEXT_PUBLIC_WS_URL
 ENV NEXT_PUBLIC_HTTP_URL=$NEXT_PUBLIC_HTTP_URL
 ENV NEXT_PUBLIC_WS_URL=$NEXT_PUBLIC_WS_URL
 
+RUN echo "Build Arg NEXT_PUBLIC_HTTP_URL is: ${NEXT_PUBLIC_HTTP_URL}"
+RUN echo "Build Arg NEXT_PUBLIC_WS_URL is: ${NEXT_PUBLIC_WS_URL}"
+
 RUN pnpm turbo run build --filter=excalidraw-frontend
 
 FROM node:20-alpine AS runner
